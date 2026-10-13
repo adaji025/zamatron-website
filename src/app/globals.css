@@ -1,26 +1,181 @@
 @import "tailwindcss";
+/* Zam color scales */
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-sans);
   --font-mono: var(--font-geist-mono);
-}
+  --font-heading: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+  --animate-hero-orbit: hero-orbit 22s linear infinite;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  @keyframes hero-orbit {
+    from {
+      transform: rotate(0deg) translateX(72px) rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg) translateX(72px) rotate(-360deg);
+    }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@theme {
+  --color-blue-zam-50: #e6f2fe;
+  --color-blue-zam-100: #b3d5fb;
+  --color-blue-zam-200: #8ec1f9;
+  --color-blue-zam-300: #5aa5f6;
+  --color-blue-zam-400: #3a94f5;
+  --color-blue-zam-500: #0979f2;
+  --color-blue-zam-600: #086edc;
+  --color-blue-zam-700: #0656ac;
+  --color-blue-zam-800: #054385;
+  --color-blue-zam-900: #043366;
+
+  --color-darkblue-zam-50: #e6e8ec;
+  --color-darkblue-zam-10: #b0b8c3;
+  --color-darkblue-zam-20: #8a96a6;
+  --color-darkblue-zam-30: #54667d;
+  --color-darkblue-zam-40: #334864;
+  /* The source palette also labels this navy swatch darkblue-zam-50. */
+  --color-darkblue-zam-50b: #001a3d;
+  --color-darkblue-zam-60: #001838;
+  --color-darkblue-zam-70: #00122b;
+  --color-darkblue-zam-80: #000e22;
+  --color-darkblue-zam-90: #000b1a;
+
+  --color-gray-50: #fdfdfd;
+  --color-gray-100: #f7f7f7;
+  --color-gray-200: #f4f4f4;
+  --color-gray-300: #eeeeee;
+  --color-gray-400: #ebebeb;
+  --color-gray-500: #e6e6e6;
+  --color-gray-600: #d1d1d1;
+  --color-gray-700: #a3a3a3;
+  --color-gray-800: #7f7f7f;
+  --color-gray-900: #616161;
+}
+
+:root {
+  --background: var(--color-gray-50);
+  --foreground: var(--color-darkblue-zam-90);
+  --card: #ffffff;
+  --card-foreground: var(--color-darkblue-zam-90);
+  --popover: #ffffff;
+  --popover-foreground: var(--color-darkblue-zam-90);
+  --primary: var(--color-blue-zam-500);
+  --primary-foreground: #ffffff;
+  --secondary: var(--color-gray-100);
+  --secondary-foreground: var(--color-darkblue-zam-90);
+  --muted: var(--color-gray-100);
+  --muted-foreground: var(--color-darkblue-zam-20);
+  --accent: var(--color-blue-zam-50);
+  --accent-foreground: var(--color-blue-zam-800);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: var(--color-gray-400);
+  --input: var(--color-gray-400);
+  --ring: var(--color-blue-zam-500);
+  --chart-1: var(--color-blue-zam-300);
+  --chart-2: var(--color-blue-zam-500);
+  --chart-3: var(--color-blue-zam-700);
+  --chart-4: var(--color-darkblue-zam-40);
+  --chart-5: var(--color-darkblue-zam-50b);
+  --radius: 0.625rem;
+  --sidebar: #ffffff;
+  --sidebar-foreground: var(--color-darkblue-zam-90);
+  --sidebar-primary: var(--color-blue-zam-500);
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: var(--color-blue-zam-50);
+  --sidebar-accent-foreground: var(--color-blue-zam-800);
+  --sidebar-border: var(--color-gray-400);
+  --sidebar-ring: var(--color-blue-zam-400);
+}
+
+.dark {
+  --background: var(--color-darkblue-zam-90);
+  --foreground: var(--color-gray-50);
+  --card: var(--color-darkblue-zam-50b);
+  --card-foreground: var(--color-gray-50);
+  --popover: var(--color-darkblue-zam-50b);
+  --popover-foreground: var(--color-gray-50);
+  --primary: var(--color-blue-zam-400);
+  --primary-foreground: #ffffff;
+  --secondary: var(--color-darkblue-zam-70);
+  --secondary-foreground: var(--color-gray-50);
+  --muted: var(--color-darkblue-zam-70);
+  --muted-foreground: var(--color-darkblue-zam-10);
+  --accent: var(--color-darkblue-zam-40);
+  --accent-foreground: var(--color-gray-50);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: var(--color-darkblue-zam-40);
+  --input: var(--color-darkblue-zam-40);
+  --ring: var(--color-blue-zam-400);
+  --chart-1: var(--color-blue-zam-200);
+  --chart-2: var(--color-blue-zam-400);
+  --chart-3: var(--color-blue-zam-500);
+  --chart-4: var(--color-darkblue-zam-10);
+  --chart-5: var(--color-darkblue-zam-20);
+  --sidebar: var(--color-darkblue-zam-80);
+  --sidebar-foreground: var(--color-gray-50);
+  --sidebar-primary: var(--color-blue-zam-500);
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: var(--color-darkblue-zam-40);
+  --sidebar-accent-foreground: var(--color-gray-50);
+  --sidebar-border: var(--color-darkblue-zam-40);
+  --sidebar-ring: var(--color-blue-zam-400);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+
+  .app-width {
+    @apply max-w-screen-2xl mx-auto px-5 lg:px-16;
+  }
 }

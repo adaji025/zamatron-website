@@ -1,9 +1,11 @@
+import { Footer } from "@/component/shared/footer";
+import { Navbar } from "@/component/shared/navbar";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
+  variable: "--font-sans",
   subsets: ["latin"],
 });
 
@@ -11,6 +13,29 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
+const stars = [
+  { cx: "6%", cy: "18%", r: 0.7, opacity: 0.7 },
+  { cx: "12%", cy: "42%", r: 1, opacity: 0.45 },
+  { cx: "18%", cy: "12%", r: 0.6, opacity: 0.8 },
+  { cx: "22%", cy: "64%", r: 0.8, opacity: 0.35 },
+  { cx: "28%", cy: "28%", r: 1.1, opacity: 0.7 },
+  { cx: "33%", cy: "78%", r: 0.6, opacity: 0.5 },
+  { cx: "39%", cy: "16%", r: 0.7, opacity: 0.55 },
+  { cx: "44%", cy: "48%", r: 0.5, opacity: 0.8 },
+  { cx: "49%", cy: "72%", r: 0.9, opacity: 0.4 },
+  { cx: "54%", cy: "22%", r: 0.6, opacity: 0.65 },
+  { cx: "58%", cy: "58%", r: 1, opacity: 0.5 },
+  { cx: "63%", cy: "14%", r: 0.7, opacity: 0.75 },
+  { cx: "68%", cy: "36%", r: 0.5, opacity: 0.4 },
+  { cx: "73%", cy: "82%", r: 0.8, opacity: 0.55 },
+  { cx: "78%", cy: "24%", r: 1, opacity: 0.6 },
+  { cx: "84%", cy: "52%", r: 0.6, opacity: 0.7 },
+  { cx: "89%", cy: "16%", r: 0.8, opacity: 0.45 },
+  { cx: "94%", cy: "68%", r: 0.5, opacity: 0.8 },
+  { cx: "15%", cy: "86%", r: 0.7, opacity: 0.4 },
+  { cx: "51%", cy: "8%", r: 0.6, opacity: 0.7 },
+];
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -23,7 +48,30 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="relative flex min-h-full flex-col bg-[#05070f] text-white">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
+        >
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_42%,rgba(16,70,168,0.55),transparent_58%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_72%_68%,rgba(8,36,110,0.4),transparent_46%)]" />
+          <svg className="absolute inset-0 h-full w-full">
+            {stars.map((star) => (
+              <circle
+                key={`${star.cx}-${star.cy}`}
+                cx={star.cx}
+                cy={star.cy}
+                r={star.r}
+                fill="white"
+                opacity={star.opacity}
+              />
+            ))}
+          </svg>
+        </div>
+        <Navbar />
+        {children}
+        <Footer />
+      </body>
     </html>
   );
 }
