@@ -1,5 +1,10 @@
+import { cn } from "@/lib/utils";
 import { PillButton } from "@/component/shared/pill-button";
-import { ChevronDown } from "lucide-react";
+import {
+  primaryButtonClassName,
+  secondaryButtonClassName,
+} from "@/component/shared/styles";
+import { ArrowDown } from "lucide-react";
 import Link from "next/link";
 
 const scores = [
@@ -77,18 +82,15 @@ export function Hero() {
         </form>
 
         <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
-          <Link
-            href="/cyber-risk-score"
-            className="inline-flex h-12 items-center rounded-full bg-[#1d74f5] px-6 text-sm font-medium text-white transition-colors hover:bg-[#3b86f6]"
-          >
+          <Link href="/cyber-risk-score" className={primaryButtonClassName}>
             Get Your Cyber Risk Score
           </Link>
           <a
             href="#platform"
-            className="inline-flex h-12 items-center gap-2 rounded-full border border-white/15 bg-[#2a2e38]/80 px-6 text-sm font-medium text-white/90 transition-colors hover:bg-[#343844]"
+            className={cn(secondaryButtonClassName, "gap-2 bg-[#2a2e38]/80")}
           >
             Explore the Platform
-            <ChevronDown className="size-4" aria-hidden="true" />
+            <ArrowDown className="size-4" aria-hidden="true" />
           </a>
         </div>
       </div>
