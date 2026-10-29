@@ -1,8 +1,15 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { ChevronDown, Menu } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
 
@@ -41,21 +48,30 @@ type MenuId = (typeof navigation)[number]["id"];
 export function Navbar() {
   const [openMenu, setOpenMenu] = useState<MenuId | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const navRef = useRef<HTMLElement>(null);
   const menuBaseId = useId();
+
+  useEffect(() => {
+    function onScroll() {
+      setScrolled(window.scrollY > 8);
+    }
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useEffect(() => {
     function onPointerDown(event: PointerEvent) {
       if (!navRef.current?.contains(event.target as Node)) {
         setOpenMenu(null);
-        setMobileOpen(false);
       }
     }
 
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
         setOpenMenu(null);
-        setMobileOpen(false);
       }
     }
 
@@ -81,7 +97,12 @@ export function Navbar() {
       <nav
         ref={navRef}
         aria-label="Primary"
-        className="app-width relative flex h-23.5 w-full items-center justify-between rounded-3xl border border-white/10 bg-transparent px-2.5 sm:px-5"
+        className={cn(
+          "app-width relative flex h-23.5 w-full items-center justify-between rounded-3xl border border-white/10 px-2.5 transition-[background-color,box-shadow,backdrop-filter] duration-300 sm:px-5",
+          scrolled
+            ? "bg-[rgba(8,14,28,0.55)] shadow-[0_12px_40px_rgba(0,0,0,0.35)] backdrop-blur-2xl supports-backdrop-filter:bg-[rgba(8,14,28,0.4)]"
+            : "bg-transparent",
+        )}
       >
         <Link href="/" className="flex items-center pl-2">
           <img
@@ -162,68 +183,63 @@ export function Navbar() {
           >
             Book a Demo
           </Link>
-          <button
-            type="button"
-            className="mr-1 inline-flex size-10 items-center justify-center rounded-full text-white md:hidden"
-            aria-expanded={mobileOpen}
-            aria-controls={`${menuBaseId}-mobile`}
-            onClick={() => {
-              setMobileOpen((open) => !open);
-              setOpenMenu(null);
-            }}
-          >
-            {mobileOpen ? (
-              <X className="size-5" aria-hidden="true" />
-            ) : (
+
+          <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+            <SheetTrigger
+              className="mr-1 inline-flex size-10 items-center justify-center rounded-full text-white md:hidden"
+              onClick={() => setOpenMenu(null)}
+            >
               <Menu className="size-5" aria-hidden="true" />
-            )}
-            <span className="sr-only">
-              {mobileOpen ? "Close menu" : "Open menu"}
-            </span>
-          </button>
+              <span className="sr-only">Open menu</span>
+            </SheetTrigger>
+            <SheetContent
+              side="right"
+              showCloseButton
+              className="w-full max-w-[20rem] gap-0 border-white/10 bg-[rgba(8,14,28,0.97)] text-white shadow-[0_16px_40px_rgba(0,0,0,0.45)] backdrop-blur-xl md:hidden **:data-[slot=sheet-close]:text-white"
+            >
+              <SheetHeader className="border-b border-white/10 px-5 pt-5 pb-4">
+                <SheetTitle className="text-left text-white">Menu</SheetTitle>
+              </SheetHeader>
+
+              <div className="flex flex-1 flex-col overflow-y-auto px-3 pb-4">
+                {navigation.map((item) => (
+                  <div
+                    key={item.id}
+                    className="border-b border-white/8 py-3 last:border-b-0"
+                  >
+                    <p className="px-3 py-1 text-xs font-medium tracking-[0.14em] text-white/45 uppercase">
+                      {item.label}
+                    </p>
+                    <ul>
+                      {item.items.map((link) => (
+                        <li key={link.href}>
+                          <Link
+                            href={link.href}
+                            className="block rounded-xl px-3 py-2.5 text-sm text-white/85 hover:bg-white/10 hover:text-white"
+                            onClick={() => setMobileOpen(false)}
+                          >
+                            {link.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-auto flex flex-col gap-2 border-t border-white/10 p-4 sm:hidden">
+                <Link
+                  href="/login"
+                  className="rounded-xl px-3 py-2.5 text-sm font-medium text-white/90 hover:bg-white/10 hover:text-white"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  Log In
+                </Link>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
       </nav>
-
-      <AnimatePresence>
-        {mobileOpen ? (
-          <motion.div
-            id={`${menuBaseId}-mobile`}
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.18, ease: "easeOut" }}
-            className="mx-auto mt-2 w-full max-w-6xl rounded-3xl border border-white/10 bg-[rgba(8,14,28,0.94)] p-3 shadow-[0_16px_40px_rgba(0,0,0,0.4)] backdrop-blur-xl md:hidden"
-          >
-            {navigation.map((item) => (
-              <div key={item.id} className="border-b border-white/8 py-2 last:border-b-0">
-                <p className="px-3 py-1 text-xs font-medium tracking-[0.14em] text-white/45 uppercase">
-                  {item.label}
-                </p>
-                <ul>
-                  {item.items.map((link) => (
-                    <li key={link.href}>
-                      <Link
-                        href={link.href}
-                        className="block rounded-xl px-3 py-2 text-sm text-white/85 hover:bg-white/10 hover:text-white"
-                        onClick={() => setMobileOpen(false)}
-                      >
-                        {link.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-            <Link
-              href="/login"
-              className="mt-1 block rounded-xl px-3 py-2 text-sm font-medium text-white sm:hidden"
-              onClick={() => setMobileOpen(false)}
-            >
-              Log In
-            </Link>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
     </motion.header>
   );
 }
